@@ -9,8 +9,9 @@ export default function Slug({ title, slug }) {
     return (
         <div>
             <h1>{title}</h1>
+            <h2>{slug}</h2>
             <Link href={slug === "foo" ? "/bar" : "/foo"}>
-                <a>Go to {slug === "foo" ? "bar" : "foo"}</a>
+                Go to {slug === "foo" ? "Bar" : "Foo"}
             </Link>
 
             <button
@@ -19,9 +20,7 @@ export default function Slug({ title, slug }) {
                     router.replace(
                         {
                             pathname: router.pathname,
-                            query: {
-                                ...router.query,
-                            },
+                            query: router.query,
                         },
                         undefined,
                         { shallow: true }
@@ -35,12 +34,13 @@ export default function Slug({ title, slug }) {
 }
 
 export async function getStaticPaths() {
-    return { paths, fallback: false };
+    return { paths, fallback: "blocking" };
 }
 
 export async function getStaticProps({ params }) {
     return {
         props: {
+            key: params.slug,
             title: params.slug === "foo" ? "Foo" : "Bar",
             slug: params.slug,
         },
